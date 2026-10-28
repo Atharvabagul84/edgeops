@@ -1,0 +1,9 @@
+{
+  "stage": "terraform-validation",
+  "run": "jenkins-edgeops-deploy-3",
+  "recordedAt": "2026-10-06T10:04:59Z",
+  "passed": true,
+  "account": "123456789012",
+  "region": "ap-southeast-2",
+  "accountPlan": "ACTIVE/FREE"
+}

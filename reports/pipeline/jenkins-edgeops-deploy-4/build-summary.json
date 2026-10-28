@@ -1,0 +1,23 @@
+{
+  "result": "SUCCESS",
+  "buildNumber": 4,
+  "jenkinsUrl": "http://127.0.0.1:8080/job/edgeops-deploy/4/",
+  "durationSeconds": 124.3,
+  "automatedTests": 99,
+  "pythonBackendAgentPipelineTests": 61,
+  "frontendTests": 18,
+  "awsAdapterTests": 20,
+  "stageReports": [
+    "apply",
+    "authenticated-health",
+    "cloud-smoke",
+    "docker",
+    "plan-review",
+    "terraform-validation",
+    "tests"
+  ],
+  "awsApplyExecuted": true,
+  "awsChangeCount": 0,
+  "fleetModified": false,
+  "temporaryAuthUserRemoved": true
+}

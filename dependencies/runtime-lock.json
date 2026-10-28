@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "targetPlatform": "windows-x64",
+  "observedAt": "2026-10-06T12:46:07.124Z",
+  "runtimes": [
+    {
+      "id": "python",
+      "version": "3.12.14",
+      "availability": "unavailable-binary",
+      "artifact": null,
+      "observedExecutable": {
+        "fileName": "python.exe",
+        "sha256": "b7a12c3af0b4db44191eec14ea095eba731b7328917f570806183093d19ddca2",
+        "origin": "Codex bundled CPython runtime",
+        "redistributed": false
+      },
+      "install": null,
+      "officialReleaseUrl": "https://www.python.org/ftp/python/3.12.14/",
+      "caveats": [
+        "Official Python 3.12.14 release publishes source archives only, not a Windows installer or embeddable package.",
+        "Provide an existing compatible Python 3.11+ runtime; exact observed Windows build is not reproduced by an official download in this lock.",
+        "The local executable fingerprint does not identify or reconstruct the full bundled Python installation."
+      ],
+      "sourceArtifact": {
+        "fileName": "Python-3.12.14.tar.xz",
+        "url": "https://www.python.org/ftp/python/3.12.14/Python-3.12.14.tar.xz",
+        "sha256": "5c8462af5790baf43a321a1559dbe0db06d1be4300fb85fb53c40060668e548a",
+        "bytes": 20820300,
+        "format": "tar.xz",
+        "verificationSource": "https://www.python.org/ftp/python/3.12.14/Python-3.12.14.tar.xz.sigstore",
+        "downloadedOfficialArtifactVerified": true,
+        "sigstoreSignatureVerificationExecuted": false,
+        "bytesIncluded": false,
+        "purpose": "Official source provenance only; not a Windows binary installer and not auto-installable by the runtime setup."
+      }
+    },
+    {
+      "id": "node",
+      "version": "24.19.0",
+      "availability": "verified-fixed-artifact",
+      "artifact": {
+        "fileName": "node-v24.19.0-win-x64.zip",
+        "url": "https://nodejs.org/dist/v24.19.0/node-v24.19.0-win-x64.zip",
+        "sha256": "57f71ab3652e797d84acddc79c81cc9ff1c6ddb2a1974cdb83f00fee9bff4c73",
+        "bytes": 37304352,
+        "format": "zip",
+        "verificationSource": "https://nodejs.org/dist/v24.19.0/SHASUMS256.txt",
+        "verifiedAgainstLocalArtifact": false,
+        "downloadedOfficialArtifactVerified": true,
+        "bytesIncluded": false
+      },
+      "install": {
+        "destination": "work/node",
+        "executableRelativePath": "node-v24.19.0-win-x64/node.exe"
+      },
+      "observedExecutable": {
+        "sha256": "3602f2bb1a10f2cbab4c36886218a33c1ab3db87290e73b033c46c77147d0237",
+        "officialChecksumMatches": true
+      },
+      "caveats": [
+        "Archive was downloaded to memory and hashed; runtime bytes are not bundled."
+      ]
+    },
+    {
+      "id": "aws-cli",
+      "version": "2.37.9",
+      "availability": "verified-fixed-artifact",
+      "artifact": {
+        "fileName": "AWSCLIV2-2.37.9.msi",
+        "url": "https://awscli.amazonaws.com/AWSCLIV2-2.37.9.msi",
+        "sha256": "980bcbbbaa186225c693a60ec563502e97366065e7d090d1c0d352c50e862f93",
+        "bytes": 50057216,
+        "format": "msi",
+        "verificationSource": "https://awscli.amazonaws.com/AWSCLIV2-2.37.9.msi",
+        "verifiedAgainstLocalArtifact": true,
+        "downloadedOfficialArtifactVerified": true,
+        "bytesIncluded": false,
+        "signatureEvidence": "Original setup verified cached MSI Authenticode status Valid and Amazon publisher; fixed-version download is byte-identical to that MSI."
+      },
+      "install": {
+        "destination": "work/aws-cli/extracted",
+        "executableRelativePath": "Amazon/AWSCLIV2/aws.exe"
+      },
+      "caveats": [
+        "MSI administrative extraction can require Windows Installer bookkeeping permissions.",
+        "Do not execute the latest mutable install script to claim this exact pin."
+      ]
+    },
+    {
+      "id": "terraform",
+      "version": "1.9.8",
+      "availability": "verified-fixed-artifact",
+      "artifact": {
+        "fileName": "terraform_1.9.8_windows_amd64.zip",
+        "url": "https://releases.hashicorp.com/terraform/1.9.8/terraform_1.9.8_windows_amd64.zip",
+        "sha256": "2667de56106bc6707968286357e29c20f8dbbb2f429ef57099b04994f82d9684",
+        "bytes": 27365272,
+        "format": "zip",
+        "verificationSource": "https://releases.hashicorp.com/terraform/1.9.8/terraform_1.9.8_SHA256SUMS",
+        "verifiedAgainstLocalArtifact": true,
+        "bytesIncluded": false
+      },
+      "install": {
+        "destination": "work/terraform-cli",
+        "executableRelativePath": "terraform.exe"
+      },
+      "caveats": [
+        "Provider binaries are separate; use the included provider lockfile."
+      ]
+    },
+    {
+      "id": "jenkins",
+      "version": "2.580.1",
+      "availability": "verified-fixed-artifact",
+      "artifact": {
+        "fileName": "jenkins.war",
+        "url": "https://get.jenkins.io/war-stable/2.580.1/jenkins.war",
+        "sha256": "393bf2476352dd726519fd1f92ce66eac7d23c0936e6967420b717060c4c40d0",
+        "bytes": 54011943,
+        "format": "war",
+        "verificationSource": "https://get.jenkins.io/war-stable/2.580.1/jenkins.war.sha256",
+        "verifiedAgainstLocalArtifact": true,
+        "bytesIncluded": false
+      },
+      "install": {
+        "destination": "work/jenkins-runtime",
+        "executableRelativePath": "jenkins.war"
+      },
+      "caveats": [
+        "Run through the Java runtime; this archive is not a standalone executable.",
+        "Controller security/home credentials are configured separately."
+      ]
+    },
+    {
+      "id": "java",
+      "version": "21.0.12.1",
+      "availability": "verified-fixed-artifact",
+      "artifact": {
+        "fileName": "OpenJDK21U-jdk_x64_windows_hotspot_21.0.12.1_1.zip",
+        "url": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.12.1%2B1/OpenJDK21U-jdk_x64_windows_hotspot_21.0.12.1_1.zip",
+        "sha256": "f9d6e191ab098c0d416e7d588a24420a8621cd2f4720dab2459b8b7b2d2d8b4e",
+        "bytes": 205073461,
+        "format": "zip",
+        "verificationSource": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.12.1%2B1/OpenJDK21U-jdk_x64_windows_hotspot_21.0.12.1_1.zip.sha256.txt",
+        "verifiedAgainstLocalArtifact": true,
+        "bytesIncluded": false
+      },
+      "install": {
+        "destination": "work/jenkins-runtime/java",
+        "executableRelativePath": "jdk-21.0.12.1+1/bin/java.exe"
+      },
+      "caveats": [
+        "Pinned Temurin Windows x64 JDK; fixed release asset selected instead of latest metadata."
+      ]
+    },
+    {
+      "id": "jenkins-plugin-manager",
+      "version": "2.15.0",
+      "availability": "verified-fixed-artifact",
+      "artifact": {
+        "fileName": "jenkins-plugin-manager-2.15.0.jar",
+        "url": "https://github.com/jenkinsci/plugin-installation-manager-tool/releases/download/2.15.0/jenkins-plugin-manager-2.15.0.jar",
+        "sha256": "a86853ec2e2933f37a4b471ba65099b61e03c87a80c2ef8fe2315eb135672d43",
+        "bytes": 7122961,
+        "format": "jar",
+        "verificationSource": "https://github.com/jenkinsci/plugin-installation-manager-tool/releases/download/2.15.0/jenkins-plugin-manager-2.15.0.jar.sha256",
+        "verifiedAgainstLocalArtifact": true,
+        "bytesIncluded": false
+      },
+      "install": {
+        "destination": "work/jenkins-runtime",
+        "executableRelativePath": "jenkins-plugin-manager-2.15.0.jar"
+      },
+      "caveats": [
+        "Run through Java; install exactly plugins.lock and verify plugin hashes instead of using --latest true."
+      ]
+    }
+  ],
+  "gaps": [
+    {
+      "id": "python",
+      "reason": "Exact observed CPython3.12.14 Windows bundled distribution is not available as an official PSF Windows binary."
+    },
+    {
+      "id": "linux-runtime-lock",
+      "reason": "Native Jenkins/runtime install contract targets Windows x64. Linux CPython3.12 optional-wheel and container rehearsal support do not establish a native Linux runtime installation lock."
+    },
+    {
+      "id": "runtime-binaries",
+      "reason": "Large runtime/plugin/provider binary archives are not included; fixed URLs and checksums require network access or a separately supplied verified cache."
+    }
+  ],
+  "scope": "Observed runtime pins and verified fixed distribution hashes. No runtime or system environment was installed/changed while building this lock."
+}

@@ -1,0 +1,222 @@
+{
+  "checkedAt": "2026-10-06T11:39:06.174417+00:00",
+  "region": "ap-southeast-2",
+  "expectedAccountVerified": true,
+  "readOnly": false,
+  "secretsRecorded": false,
+  "notificationAddressesRecorded": false,
+  "freePlan": {
+    "readSucceeded": true,
+    "accountPlanType": "FREE",
+    "accountPlanStatus": "ACTIVE",
+    "accountPlanRemainingCredits": {
+      "amount": 120.0,
+      "unit": "USD"
+    },
+    "accountPlanExpirationDate": "2027-04-06T09:03:53.845000+00:00",
+    "checkedAt": "2026-10-06T11:37:51.088332+00:00"
+  },
+  "budgets": {
+    "readSucceeded": true,
+    "count": 1,
+    "checkedAt": "2026-10-06T11:39:06.174417+00:00",
+    "verificationMethod": "SDK DescribeBudgets plus DescribeBudget, DescribeNotificationsForBudget, DescribeSubscribersForNotification and DescribeBudgetActionsForBudget",
+    "items": [
+      {
+        "name": "edgeops-monthly-usage-usd5",
+        "type": "COST",
+        "timeUnit": "MONTHLY",
+        "limit": {
+          "Amount": "5.0",
+          "Unit": "USD"
+        },
+        "calculatedSpend": {
+          "ActualSpend": {
+            "Amount": "0.0",
+            "Unit": "USD"
+          }
+        }
+      }
+    ],
+    "approvedSetup": {
+      "checkedAt": "2026-10-06T11:37:51.088332+00:00",
+      "dryRun": false,
+      "secretsRecorded": false,
+      "notificationAddressesRecorded": false,
+      "pricingSource": "https://aws.amazon.com/aws-cost-management/aws-budgets/pricing/",
+      "configuration": {
+        "AccountId": "123456789012",
+        "Budget": {
+          "BudgetName": "edgeops-monthly-usage-usd5",
+          "BudgetType": "COST",
+          "TimeUnit": "MONTHLY",
+          "BudgetLimit": {
+            "Amount": "5",
+            "Unit": "USD"
+          },
+          "CostTypes": {
+            "IncludeTax": true,
+            "IncludeSubscription": true,
+            "UseBlended": false,
+            "IncludeRefund": false,
+            "IncludeCredit": false,
+            "IncludeUpfront": true,
+            "IncludeRecurring": true,
+            "IncludeOtherSubscription": true,
+            "IncludeSupport": true,
+            "IncludeDiscount": true,
+            "UseAmortized": false
+          }
+        },
+        "NotificationsWithSubscribers": [
+          {
+            "Notification": {
+              "NotificationType": "ACTUAL",
+              "ComparisonOperator": "GREATER_THAN",
+              "Threshold": 1,
+              "ThresholdType": "ABSOLUTE_VALUE"
+            },
+            "Subscribers": [
+              {
+                "SubscriptionType": "EMAIL",
+                "Address": "[approved recipient redacted]"
+              }
+            ]
+          },
+          {
+            "Notification": {
+              "NotificationType": "ACTUAL",
+              "ComparisonOperator": "GREATER_THAN",
+              "Threshold": 5,
+              "ThresholdType": "ABSOLUTE_VALUE"
+            },
+            "Subscribers": [
+              {
+                "SubscriptionType": "EMAIL",
+                "Address": "[approved recipient redacted]"
+              }
+            ]
+          }
+        ]
+      },
+      "created": true,
+      "existingBudgetReused": false,
+      "budgetVerified": true,
+      "notificationCount": 2,
+      "subscriberCountPerNotification": 1,
+      "subscriberType": "EMAIL",
+      "recipient": "[approved recipient redacted]",
+      "actionsCount": 0,
+      "emailDeliveryTested": false,
+      "calculatedSpend": {
+        "ActualSpend": {
+          "Amount": "0.0",
+          "Unit": "USD"
+        }
+      },
+      "freePlanVerified": true,
+      "accountPlanRemainingCredits": {
+        "amount": 120.0,
+        "unit": "USD"
+      },
+      "accountPlanExpirationDate": "2027-04-06 09:03:53.845000+00:00",
+      "passed": true
+    },
+    "scope": "Account-wide unblended costs; credits and refunds excluded. This does not measure the exact Free Tier credit balance.",
+    "delivery": "Email recipient and both subscriptions verified. Email delivery was not tested.",
+    "limitBehavior": "Notifications only; no hard cap or resource stopping action. AWS billing and notifications can lag usage.",
+    "pricingSource": "https://aws.amazon.com/aws-cost-management/aws-budgets/pricing/",
+    "timingSource": "https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html",
+    "costTypesSource": "https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_budgets_CostTypes.html"
+  },
+  "edgeOpsAlarms": {
+    "readSucceeded": true,
+    "items": [
+      {
+        "name": "edgeops-demo-dead-letters",
+        "namespace": "AWS/SQS",
+        "metric": "ApproximateNumberOfMessagesVisible",
+        "state": "OK",
+        "actionsEnabled": true,
+        "alarmActionCount": 0,
+        "okActionCount": 0,
+        "insufficientDataActionCount": 0,
+        "threshold": 0.0,
+        "comparison": "GreaterThanThreshold"
+      },
+      {
+        "name": "edgeops-demo-state-write-throttles",
+        "namespace": "AWS/DynamoDB",
+        "metric": "WriteThrottleEvents",
+        "state": "OK",
+        "actionsEnabled": true,
+        "alarmActionCount": 0,
+        "okActionCount": 0,
+        "insufficientDataActionCount": 0,
+        "threshold": 0.0,
+        "comparison": "GreaterThanThreshold"
+      }
+    ],
+    "checkedAt": "2026-10-06T11:31:56.610722+00:00"
+  },
+  "teardown": {
+    "localStatePresent": true,
+    "managedResourceCount": 51,
+    "managedResourceTypes": {
+      "aws_apigatewayv2_api": 1,
+      "aws_apigatewayv2_authorizer": 1,
+      "aws_apigatewayv2_integration": 1,
+      "aws_apigatewayv2_route": 7,
+      "aws_apigatewayv2_stage": 1,
+      "aws_cloudfront_distribution": 1,
+      "aws_cloudfront_origin_access_control": 1,
+      "aws_cloudfront_response_headers_policy": 1,
+      "aws_cloudwatch_log_group": 3,
+      "aws_cloudwatch_metric_alarm": 2,
+      "aws_cognito_user_pool": 1,
+      "aws_cognito_user_pool_client": 1,
+      "aws_dynamodb_table": 1,
+      "aws_iam_role": 2,
+      "aws_iam_role_policy": 2,
+      "aws_lambda_event_source_mapping": 1,
+      "aws_lambda_function": 2,
+      "aws_lambda_permission": 1,
+      "aws_s3_bucket": 1,
+      "aws_s3_bucket_policy": 1,
+      "aws_s3_bucket_public_access_block": 1,
+      "aws_s3_bucket_server_side_encryption_configuration": 1,
+      "aws_s3_object": 14,
+      "aws_sqs_queue": 2,
+      "aws_sqs_queue_redrive_allow_policy": 1
+    },
+    "regionOverridePresent": true,
+    "providerLockfilePresent": true,
+    "terraformHelperPresent": true,
+    "awsHelperPresent": true,
+    "credentialProfileConfigPresent": true,
+    "guidePresent": true,
+    "destroyPlanRun": false,
+    "destroyRun": false,
+    "requirements": [
+      "Preserve private local Terraform state, helpers and Region override.",
+      "Refresh the isolated temporary AWS session when expired.",
+      "Stop concurrent deployment runs and review a saved destroy plan before applying it.",
+      "Export fleet diagnostics before removal; unknown S3 objects require explicit handling."
+    ],
+    "checkedAt": "2026-10-06T11:31:56.610722+00:00",
+    "budgetOutsideTerraform": {
+      "name": "edgeops-monthly-usage-usd5",
+      "notificationMonitoringFree": true,
+      "deletedByTerraformDestroy": false,
+      "note": "The approved account-level budget is outside the application Terraform state; it remains after app teardown unless separately removed."
+    }
+  },
+  "scopeLimits": [
+    "Inspected AWS Free plan, account budgets and EdgeOps-prefixed CloudWatch alarms in the project Region.",
+    "Created only the user-approved monthly USD5 cost budget with actual USD1 and USD5 email thresholds.",
+    "No budget Actions, paid Reports, operational SNS subscriptions or account-plan upgrade were made.",
+    "Did not inspect billing-notification preferences or CloudWatch billing alarms outside the project Region.",
+    "No teardown plan, application resource deletion or fleet modification was performed."
+  ],
+  "initialReadOnlyAuditAt": "2026-10-06T11:31:56.610722+00:00"
+}

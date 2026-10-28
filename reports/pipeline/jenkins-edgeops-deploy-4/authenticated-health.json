@@ -1,0 +1,40 @@
+{
+  "startedAt": "2026-10-06T10:14:11.680279+00:00",
+  "region": "ap-southeast-2",
+  "apiUrl": "https://example123.execute-api.ap-southeast-2.amazonaws.com",
+  "checks": [
+    {
+      "name": "unauthenticated_rejected",
+      "passed": true,
+      "evidence": {
+        "httpStatus": 401
+      },
+      "seconds": 1.25
+    },
+    {
+      "name": "cognito_login",
+      "passed": true,
+      "evidence": {
+        "authenticated": true,
+        "emailDeliverySuppressed": true
+      },
+      "seconds": 5.31
+    },
+    {
+      "name": "health_and_state",
+      "passed": true,
+      "evidence": {
+        "deviceCount": 3,
+        "persistence": "dynamodb"
+      },
+      "seconds": 3.12
+    }
+  ],
+  "cleanup": {
+    "userWasCreated": true,
+    "ephemeralUserDeleted": true
+  },
+  "secretsRecorded": false,
+  "passed": true,
+  "fleetModified": false
+}

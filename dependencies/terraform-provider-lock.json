@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "terraformVersion": "1.17.0",
+  "lockfile": "terraform.lock.hcl",
+  "sha256": "707c54f56e5a1bd79cd39479c8c6a1d7bcc3489aba84c92b37a4498280107c3a",
+  "source": "outputs/edgeops/infra/.terraform.lock.hcl",
+  "providers": [
+    {
+      "source": "registry.terraform.io/hashicorp/aws",
+      "version": "6.67.0"
+    },
+    {
+      "source": "registry.terraform.io/hashicorp/archive",
+      "version": "2.8.1"
+    }
+  ],
+  "originalInstallationSignedBy": "HashiCorp",
+  "providerBinariesIncluded": false,
+  "platforms": [
+    "windows_amd64",
+    "linux_amd64",
+    "darwin_amd64",
+    "darwin_arm64"
+  ]
+}

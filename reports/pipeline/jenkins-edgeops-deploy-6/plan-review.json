@@ -1,0 +1,65 @@
+{
+  "stage": "plan-review",
+  "run": "jenkins-edgeops-deploy-6",
+  "recordedAt": "2026-10-06T11:41:19Z",
+  "passed": true,
+  "terraformExitCode": 2,
+  "account": "123456789012",
+  "region": "ap-southeast-2",
+  "updates": [
+    {
+      "address": "aws_lambda_function.service[\"api\"]",
+      "fields": [
+        "last_modified",
+        "source_code_hash"
+      ]
+    },
+    {
+      "address": "aws_lambda_function.service[\"worker\"]",
+      "fields": [
+        "last_modified",
+        "source_code_hash"
+      ]
+    },
+    {
+      "address": "aws_s3_object.frontend[\"api.js\"]",
+      "fields": [
+        "etag",
+        "version_id"
+      ]
+    },
+    {
+      "address": "aws_s3_object.frontend[\"app.js\"]",
+      "fields": [
+        "etag",
+        "version_id"
+      ]
+    },
+    {
+      "address": "aws_s3_object.frontend[\"index.html\"]",
+      "fields": [
+        "etag",
+        "version_id"
+      ]
+    },
+    {
+      "address": "aws_s3_object.frontend[\"presentation.js\"]",
+      "fields": [
+        "etag",
+        "version_id"
+      ]
+    },
+    {
+      "address": "aws_s3_object.frontend[\"styles.css\"]",
+      "fields": [
+        "etag",
+        "version_id"
+      ]
+    }
+  ],
+  "changeCount": 7,
+  "refreshOnlyDrift": [
+    "aws_cognito_user_pool.operators"
+  ],
+  "policy": "Existing Lambda code and frontend bytes only; no resource or permission changes"
+}

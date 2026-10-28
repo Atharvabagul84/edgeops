@@ -1,0 +1,9 @@
+{
+  "stage": "docker",
+  "run": "jenkins-edgeops-deploy-6",
+  "recordedAt": "2026-10-06T11:40:02Z",
+  "passed": true,
+  "healthStatus": 200,
+  "binding": "127.0.0.1",
+  "ephemeralContainer": true
+}

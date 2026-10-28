@@ -1,0 +1,304 @@
+{
+  "mode": "aws",
+  "now": "2026-10-06T09:23:52.328Z",
+  "demo": true,
+  "dataSource": "Synthetic device telemetry",
+  "devices": [
+    {
+      "id": "edge-001",
+      "name": "Nashik Gateway",
+      "location": "Nashik, India",
+      "status": "healthy",
+      "connected": true,
+      "temperature": 28.1,
+      "battery": 91.97,
+      "signal": 95,
+      "lastSeen": "2026-10-06T09:23:48.323Z",
+      "firmware": "1.4.2",
+      "sequence": 15,
+      "buffered": 0,
+      "received": 15,
+      "history": [
+        {
+          "at": "2026-10-06T09:11:49.599Z",
+          "temperature": 27.2
+        },
+        {
+          "at": "2026-10-06T09:12:19.599Z",
+          "temperature": 27.4
+        },
+        {
+          "at": "2026-10-06T09:12:49.599Z",
+          "temperature": 27.2
+        },
+        {
+          "at": "2026-10-06T09:13:19.599Z",
+          "temperature": 27.2
+        },
+        {
+          "at": "2026-10-06T09:13:49.599Z",
+          "temperature": 27.4
+        },
+        {
+          "at": "2026-10-06T09:14:19.599Z",
+          "temperature": 27.2
+        },
+        {
+          "at": "2026-10-06T09:14:49.599Z",
+          "temperature": 27.2
+        },
+        {
+          "at": "2026-10-06T09:15:19.599Z",
+          "temperature": 27.4
+        },
+        {
+          "at": "2026-10-06T09:15:49.599Z",
+          "temperature": 27.2
+        },
+        {
+          "at": "2026-10-06T09:16:19.599Z",
+          "temperature": 27.2
+        },
+        {
+          "at": "2026-10-06T09:16:49.599Z",
+          "temperature": 27.4
+        },
+        {
+          "at": "2026-10-06T09:17:19.599Z",
+          "temperature": 27.2
+        },
+        {
+          "at": "2026-10-06T09:23:48.323Z",
+          "temperature": 27.8
+        },
+        {
+          "at": "2026-10-06T09:23:48.323Z",
+          "temperature": 28.6
+        },
+        {
+          "at": "2026-10-06T09:23:48.323Z",
+          "temperature": 28.1
+        }
+      ]
+    },
+    {
+      "id": "edge-002",
+      "name": "Pune Cold Store",
+      "location": "Pune, India",
+      "status": "healthy",
+      "connected": true,
+      "temperature": 5.2,
+      "battery": 85.99,
+      "signal": 95,
+      "lastSeen": "2026-10-06T09:23:48.323Z",
+      "firmware": "1.4.2",
+      "sequence": 15,
+      "buffered": 0,
+      "received": 15,
+      "history": [
+        {
+          "at": "2026-10-06T09:11:49.599Z",
+          "temperature": 4.3
+        },
+        {
+          "at": "2026-10-06T09:12:19.599Z",
+          "temperature": 4.5
+        },
+        {
+          "at": "2026-10-06T09:12:49.599Z",
+          "temperature": 4.3
+        },
+        {
+          "at": "2026-10-06T09:13:19.599Z",
+          "temperature": 4.3
+        },
+        {
+          "at": "2026-10-06T09:13:49.599Z",
+          "temperature": 4.5
+        },
+        {
+          "at": "2026-10-06T09:14:19.599Z",
+          "temperature": 4.3
+        },
+        {
+          "at": "2026-10-06T09:14:49.599Z",
+          "temperature": 4.3
+        },
+        {
+          "at": "2026-10-06T09:15:19.599Z",
+          "temperature": 4.5
+        },
+        {
+          "at": "2026-10-06T09:15:49.599Z",
+          "temperature": 4.3
+        },
+        {
+          "at": "2026-10-06T09:16:19.599Z",
+          "temperature": 4.3
+        },
+        {
+          "at": "2026-10-06T09:16:49.599Z",
+          "temperature": 4.5
+        },
+        {
+          "at": "2026-10-06T09:17:19.599Z",
+          "temperature": 4.3
+        },
+        {
+          "at": "2026-10-06T09:23:48.323Z",
+          "temperature": 4.9
+        },
+        {
+          "at": "2026-10-06T09:23:48.323Z",
+          "temperature": 5.7
+        },
+        {
+          "at": "2026-10-06T09:23:48.323Z",
+          "temperature": 5.2
+        }
+      ]
+    },
+    {
+      "id": "edge-003",
+      "name": "Bengaluru Rover",
+      "location": "Bengaluru, India",
+      "status": "healthy",
+      "connected": true,
+      "temperature": 32,
+      "battery": 77.97,
+      "signal": 95,
+      "lastSeen": "2026-10-06T09:23:48.323Z",
+      "firmware": "1.4.2",
+      "sequence": 15,
+      "buffered": 0,
+      "received": 15,
+      "history": [
+        {
+          "at": "2026-10-06T09:11:49.599Z",
+          "temperature": 31.1
+        },
+        {
+          "at": "2026-10-06T09:12:19.599Z",
+          "temperature": 31.3
+        },
+        {
+          "at": "2026-10-06T09:12:49.599Z",
+          "temperature": 31.1
+        },
+        {
+          "at": "2026-10-06T09:13:19.599Z",
+          "temperature": 31.1
+        },
+        {
+          "at": "2026-10-06T09:13:49.599Z",
+          "temperature": 31.3
+        },
+        {
+          "at": "2026-10-06T09:14:19.599Z",
+          "temperature": 31.1
+        },
+        {
+          "at": "2026-10-06T09:14:49.599Z",
+          "temperature": 31.1
+        },
+        {
+          "at": "2026-10-06T09:15:19.599Z",
+          "temperature": 31.3
+        },
+        {
+          "at": "2026-10-06T09:15:49.599Z",
+          "temperature": 31.1
+        },
+        {
+          "at": "2026-10-06T09:16:19.599Z",
+          "temperature": 31.1
+        },
+        {
+          "at": "2026-10-06T09:16:49.599Z",
+          "temperature": 31.3
+        },
+        {
+          "at": "2026-10-06T09:17:19.599Z",
+          "temperature": 31.1
+        },
+        {
+          "at": "2026-10-06T09:23:48.323Z",
+          "temperature": 31.7
+        },
+        {
+          "at": "2026-10-06T09:23:48.323Z",
+          "temperature": 32.5
+        },
+        {
+          "at": "2026-10-06T09:23:48.323Z",
+          "temperature": 32
+        }
+      ]
+    }
+  ],
+  "incidents": [
+    {
+      "id": "2466b0b6-5f08-4371-a2d9-50bd1f6a2c4d",
+      "deviceId": "edge-002",
+      "kind": "offline",
+      "title": "Device disconnected",
+      "severity": "critical",
+      "openedAt": "2026-10-06T09:23:46.363Z",
+      "resolvedAt": "2026-10-06T09:23:49.957Z",
+      "acknowledgedAt": null,
+      "status": "resolved"
+    }
+  ],
+  "events": [
+    {
+      "id": "1fd59a90-d365-48ce-ad66-03d59f87b807",
+      "deviceId": "edge-002",
+      "type": "duplicate",
+      "message": "Duplicate or stale sequence ignored safely",
+      "at": "2026-10-06T09:23:52.328Z"
+    },
+    {
+      "id": "1aba6d84-1f61-4388-96ad-e6302527d118",
+      "deviceId": "edge-002",
+      "type": "reconnected",
+      "message": "Connection restored; persisted buffer replayed",
+      "at": "2026-10-06T09:23:49.957Z"
+    },
+    {
+      "id": "918a83e7-417e-48fc-bd06-e440b5a54aed",
+      "deviceId": "edge-002",
+      "type": "resolved",
+      "message": "Resolved: Device disconnected",
+      "at": "2026-10-06T09:23:49.957Z"
+    },
+    {
+      "id": "b1ea297d-80d1-432f-8e8d-754159715bed",
+      "deviceId": "edge-002",
+      "type": "incident",
+      "message": "Device disconnected",
+      "at": "2026-10-06T09:23:46.363Z"
+    },
+    {
+      "id": "0f83e535-abe0-43f5-bb6b-d471b1bd258b",
+      "deviceId": null,
+      "type": "system",
+      "message": "Local demo initialized with three synthetic devices",
+      "at": "2026-10-06T09:17:19.599Z"
+    }
+  ],
+  "stats": {
+    "ingested": 45,
+    "duplicates": 1,
+    "replayed": 3,
+    "buffered": 0,
+    "activeIncidents": 0
+  },
+  "pipeline": {
+    "accepted": 45,
+    "processed": 45,
+    "duplicates": 1,
+    "deadLetters": 0
+  },
+  "exportedAt": "2026-10-06T09:23:55.863Z",
+  "diagnosticNote": "Synthetic AWS-backed demonstration. Single shared fleet."
+}

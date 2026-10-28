@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "deny": [
+      "Bash(terraform apply:*)",
+      "Bash(terraform destroy:*)",
+      "Bash(terraform import:*)",
+      "Bash(terraform state:*)",
+      "Bash(terraform -chdir=* apply:*)",
+      "Bash(terraform -chdir=* destroy:*)",
+      "Bash(terraform -chdir=* import:*)",
+      "Bash(terraform -chdir=* state:*)",
+      "Bash(aws configure export-credentials:*)",
+      "Bash(aws s3 rm:*)",
+      "Bash(aws s3 rb:*)",
+      "Bash(aws s3 cp:*)",
+      "Bash(aws s3 sync:*)",
+      "Bash(aws lambda update-function-code:*)",
+      "Bash(aws lambda update-function-configuration:*)",
+      "Bash(aws lambda delete-function:*)",
+      "Bash(aws dynamodb delete-table:*)",
+      "Bash(aws dynamodb delete-item:*)",
+      "Bash(aws dynamodb put-item:*)",
+      "Bash(aws sqs delete-queue:*)",
+      "Bash(aws sqs purge-queue:*)",
+      "Bash(aws cognito-idp admin-create-user:*)",
+      "Bash(aws cognito-idp admin-delete-user:*)",
+      "Bash(aws cloudfront delete-distribution:*)",
+      "Bash(aws iam:*)",
+      "Read(outputs/**)",
+      "Read(infra/terraform.tfvars)"
+    ]
+  }
+}

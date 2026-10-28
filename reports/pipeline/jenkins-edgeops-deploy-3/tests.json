@@ -1,0 +1,12 @@
+{
+  "stage": "tests",
+  "run": "jenkins-edgeops-deploy-3",
+  "recordedAt": "2026-10-06T10:04:36Z",
+  "passed": true,
+  "suites": [
+    "backend-agent-pipeline",
+    "frontend",
+    "aws-adapter",
+    "python-compilation"
+  ]
+}

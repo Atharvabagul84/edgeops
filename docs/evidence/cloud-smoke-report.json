@@ -1,0 +1,121 @@
+{
+  "startedAt": "2026-10-06T09:16:17.758628+00:00",
+  "region": "ap-southeast-2",
+  "apiUrl": "https://example123.execute-api.ap-southeast-2.amazonaws.com",
+  "checks": [
+    {
+      "name": "unauthenticated_rejected",
+      "passed": true,
+      "evidence": {
+        "httpStatus": 401
+      },
+      "seconds": 1.48
+    },
+    {
+      "name": "cognito_login",
+      "passed": true,
+      "evidence": {
+        "authenticated": true,
+        "emailDeliverySuppressed": true
+      },
+      "seconds": 10.16
+    },
+    {
+      "name": "health_and_state",
+      "passed": true,
+      "evidence": {
+        "deviceCount": 3,
+        "persistence": "dynamodb"
+      },
+      "seconds": 8.86
+    },
+    {
+      "name": "reset_and_tick",
+      "passed": true,
+      "evidence": {
+        "newReadings": 6
+      },
+      "seconds": 3.52
+    },
+    {
+      "name": "incident_lifecycle",
+      "passed": true,
+      "evidence": {
+        "warningAcknowledged": true,
+        "resolvedOnRecovery": true
+      },
+      "seconds": 5.0
+    },
+    {
+      "name": "offline_recovery",
+      "passed": true,
+      "evidence": {
+        "persistedReadingsReplayed": 3,
+        "remainingBuffered": 0
+      },
+      "seconds": 5.03
+    },
+    {
+      "name": "direct_deduplication",
+      "passed": true,
+      "evidence": {
+        "duplicateSuppressed": true
+      },
+      "seconds": 3.81
+    },
+    {
+      "name": "export_metadata",
+      "passed": true,
+      "evidence": {
+        "cloudMetadata": true,
+        "downloadHeader": true
+      },
+      "seconds": 1.62
+    },
+    {
+      "name": "queued_telemetry_worker",
+      "passed": true,
+      "evidence": {
+        "httpStatus": 202,
+        "queueAccepted": 2,
+        "workerProcessed": 2,
+        "statePolls": 2
+      },
+      "seconds": 9.88
+    },
+    {
+      "name": "queued_duplicate_worker",
+      "passed": true,
+      "evidence": {
+        "duplicateBatchAccepted": true,
+        "workerSuppressedAtLeast": 2,
+        "statePolls": 1
+      },
+      "seconds": 5.23
+    },
+    {
+      "name": "invalid_batch_rejected",
+      "passed": true,
+      "evidence": {
+        "httpStatus": 400,
+        "ingestionUnchanged": true
+      },
+      "seconds": 4.95
+    },
+    {
+      "name": "restore_clean_demo",
+      "passed": true,
+      "evidence": {
+        "deviceCount": 3
+      },
+      "seconds": 1.83
+    }
+  ],
+  "cleanup": {
+    "userWasCreated": true,
+    "ephemeralUserDeleted": true
+  },
+  "secretsRecorded": false,
+  "finishedAt": "2026-10-06T09:17:33.839369+00:00",
+  "passed": true
+}

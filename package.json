@@ -1,0 +1,11 @@
+{
+  "name": "edgeops-mvp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Local-first device reliability demo with a future AWS deployment scaffold",
+  "scripts": {
+    "test": "node --test frontend/tests/*.test.mjs"
+  },
+  "engines": { "node": ">=20" }
+}

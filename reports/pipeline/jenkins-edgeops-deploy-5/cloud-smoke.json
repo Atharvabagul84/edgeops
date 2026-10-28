@@ -1,0 +1,33 @@
+{
+  "stage": "cloud-smoke",
+  "run": "jenkins-edgeops-deploy-5",
+  "recordedAt": "2026-10-06T11:36:23Z",
+  "passed": true,
+  "checks": [
+    {
+      "name": "site_and_security_headers",
+      "passed": true
+    },
+    {
+      "name": "cloud_configuration",
+      "passed": true
+    },
+    {
+      "name": "javascript",
+      "passed": true
+    },
+    {
+      "name": "unauthenticated_api",
+      "passed": true
+    },
+    {
+      "name": "dashboard_cors",
+      "passed": true
+    },
+    {
+      "name": "private_s3",
+      "passed": true
+    }
+  ],
+  "fleetMutated": false
+}

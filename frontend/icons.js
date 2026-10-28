@@ -1,0 +1,21 @@
+const paths = {
+  grid:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+  device:'<rect x="5" y="3" width="14" height="18" rx="3"/><path d="M9 7h6M9 11h6M10 17h4"/>',
+  incident:'<path d="M10.3 4.9 2.8 18a2 2 0 0 0 1.7 3h15a2 2 0 0 0 1.7-3L13.7 4.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/>',
+  activity:'<path d="M3 12h4l3-8 4 16 3-8h4"/>',
+  architecture:'<rect x="8" y="2" width="8" height="6" rx="1.5"/><rect x="2" y="16" width="7" height="6" rx="1.5"/><rect x="15" y="16" width="7" height="6" rx="1.5"/><path d="M12 8v4M5.5 16v-4h13v4"/>',
+  arrow:'<path d="M5 12h14m-5-5 5 5-5 5"/>',
+  play:'<path d="m8 5 12 7-12 7Z"/>',
+  pause:'<path d="M8 5v14M16 5v14"/>',
+  download:'<path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/>',
+  refresh:'<path d="M20 7v5h-5M4 17v-5h5M5 8a8 8 0 0 1 13-3l2 3M4 16l2 3a8 8 0 0 0 13-3"/>',
+  check:'<path d="m5 12 4 4L19 6"/>',
+  close:'<path d="m6 6 12 12M6 18 18 6"/>',
+  signal:'<path d="M4 20v-4M9 20v-8M14 20V8M19 20V4"/>',
+  cloud:'<path d="M6 18h12a4 4 0 0 0 0-8h-.4A6 6 0 0 0 6 8a5 5 0 0 0 0 10Z"/>',
+  bolt:'<path d="m13 2-9 12h7l-1 8 10-13h-8Z"/>',
+  search:'<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/>',
+  code:'<path d="m8 7-5 5 5 5m8-10 5 5-5 5M14 4l-4 16"/>',
+  shield:'<path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6Z"/><path d="m8 12 3 3 5-6"/>',
+};
+export const icon = (name, cls='') => `<svg class="icon ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name] || paths.device}</svg>`;

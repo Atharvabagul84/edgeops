@@ -1,0 +1,7 @@
+{
+  "checks": [],
+  "cleanup": {},
+  "passed": false,
+  "fleetModified": false,
+  "error": "PermissionError"
+}

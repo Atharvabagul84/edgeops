@@ -1,0 +1,78 @@
+{
+  "startedAt": "2026-10-06T11:36:28.262924+00:00",
+  "region": "ap-southeast-2",
+  "apiUrl": "https://example123.execute-api.ap-southeast-2.amazonaws.com",
+  "checks": [
+    {
+      "name": "unauthenticated_rejected",
+      "passed": true,
+      "evidence": {
+        "httpStatus": 401
+      },
+      "seconds": 1.33
+    },
+    {
+      "name": "cognito_login",
+      "passed": true,
+      "evidence": {
+        "authenticated": true,
+        "emailDeliverySuppressed": true
+      },
+      "seconds": 5.88
+    },
+    {
+      "name": "health_and_state",
+      "passed": true,
+      "evidence": {
+        "deviceCount": 3,
+        "persistence": "dynamodb"
+      },
+      "seconds": 2.97
+    },
+    {
+      "name": "deployed_release",
+      "passed": true,
+      "evidence": {
+        "release": {
+          "version": "0.3.0",
+          "id": "edgeops-0.3.0"
+        },
+        "legacyRelease": false,
+        "lambdaFunctionsMatched": 2,
+        "lambdaCodeSha256": "J7xISU0hw4R+uQ2uoWJqavI2gDuoDv2n09tQFdcAUXs=",
+        "frontend": {
+          "matchedAssetCount": 13,
+          "sha256": {
+            "api.js": "8cffe1d1266d25e69cd48e212ce4e7570cb6656eaaf3fe0008193f4439ea320c",
+            "app.js": "51af5421ce6c39fc770dd5dc26b54c64ac2f233ff049f1d3df80fe7975e4b899",
+            "auth.js": "419eb6ebdb284c4c0501bede2fac763335ddcd1e7ce4c9a2582d31fbf80974e2",
+            "chart.js": "eae06569530414e5f4d96c69132b6308b1813bb09d1b3bcd16b6ccd1501cbbff",
+            "cloud-ui.js": "41875b7125afecf826fa1f0aedc3c8fba4be4d3819ed815bb9c4ee212506706a",
+            "cloud.css": "7ad926090e8f2a1b06b5e26e1087c5543ff24ef9b03e2269eb417c05c770aede",
+            "fleet.js": "2be050ff2d4a0a3a76dfac6927e80857ddbbd7e9923f154ebce0094e76264d35",
+            "icons.js": "f8c49888222beb85ec99c2b9214e29bfb861ce424b8e51e937b1acc7055859c1",
+            "index.html": "912106f59fb9754a9f14b1b331b0bb338da51a8cae75e7a91045bf120cf688d0",
+            "operations.js": "3279757db768473c44b431987790d14afab0106106fa00e772e58cd6ee1cae7a",
+            "presentation.js": "c464dc29075576244a1481651c4b59a06ba1a2dddd2ff99e0aef03962731d7a6",
+            "responsive.css": "d46b8a147b2f76e87a0d4e713c592f53956bba609f1ab1688779afd7dfc24172",
+            "styles.css": "8862e22c35fcabbd85de85cbb3b1f8f52237e46ffb0bf2c9961f8c575a9090b3"
+          },
+          "cacheCheckAttempts": 1
+        },
+        "fleet": {
+          "payloadSha256": "4c3d529ca56a79551eebb5088b1c3b267cf424e4c6c9798c08171b98a6416daf",
+          "stateRevision": "16"
+        },
+        "fleetUnchangedSinceBaseline": true
+      },
+      "seconds": 18.25
+    }
+  ],
+  "cleanup": {
+    "userWasCreated": true,
+    "ephemeralUserDeleted": true
+  },
+  "secretsRecorded": false,
+  "passed": true,
+  "fleetModified": false
+}

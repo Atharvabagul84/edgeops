@@ -1,0 +1,13 @@
+{
+  "stage": "plan-review",
+  "run": "jenkins-edgeops-deploy-4",
+  "recordedAt": "2026-10-06T10:13:33Z",
+  "passed": true,
+  "terraformExitCode": 0,
+  "account": "123456789012",
+  "region": "ap-southeast-2",
+  "updates": [],
+  "changeCount": 0,
+  "refreshOnlyDrift": [],
+  "policy": "Existing Lambda code and frontend bytes only; no resource or permission changes"
+}
