@@ -15,7 +15,6 @@
 ## 04 Target Users
 - Platform/SRE engineers evaluating delivery-guarantee patterns
 - Operators watching a device fleet (dashboard)
-- Hiring reviewers assessing DevOps and AWS practice
 
 ## 05 Core Features (Version 1)
 - **Durable outbox:** standalone agent buffers up to 10,000 readings in SQLite and deletes only acknowledged batches.
