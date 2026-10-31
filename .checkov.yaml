@@ -1,0 +1,32 @@
+# Checkov settings for the Terraform source (CI) and plan JSON (deploy workflow).
+# Every skip is a deliberate demo trade-off, mostly cost. Remove a skip when the
+# control is added; don't add skips to get a red build through.
+compact: true
+quiet: true
+skip-check:
+  # Lambda
+  - CKV_AWS_116 # DLQ on the function: the worker's SQS queue already redrives to a DLQ; the API Lambda is synchronous
+  - CKV_AWS_117 # Lambda in a VPC: would need NAT or VPC endpoints (paid); the functions only call AWS APIs
+  - CKV_AWS_115 # Reserved concurrency: new accounts can't reserve below the unreserved minimum; ESM max concurrency is 2
+  - CKV_AWS_173 # KMS CMK for environment variables: they hold only table and queue names
+  - CKV_AWS_272 # Code signing: releases are fingerprinted by the plan review instead
+  - CKV_AWS_50  # X-Ray tracing: not enabled in the demo
+  # Logs and encryption keys
+  - CKV_AWS_158 # CMK for log groups: $1/month per key; AWS-managed encryption is used
+  - CKV_AWS_338 # 1-year log retention: 3 days on purpose (synthetic data, cost)
+  - CKV_AWS_119 # CMK for DynamoDB: AWS-owned key SSE is enabled
+  - CKV_AWS_145 # CMK for S3: SSE-S3 is enabled
+  - CKV_AWS_26  # SNS encryption: alert topic carries alarm names only
+  # S3 frontend and state buckets
+  - CKV_AWS_18  # S3 access logging: would need another bucket and storage
+  - CKV_AWS_144 # Cross-region replication: single-region demo
+  - CKV_AWS_21  # Versioning on the frontend bucket: contents are rebuilt from git (the state bucket is versioned)
+  - CKV2_AWS_61 # Lifecycle on the frontend bucket: a dozen small objects
+  - CKV2_AWS_62 # S3 event notifications: not used
+  # CloudFront
+  - CKV_AWS_68  # WAF: paid; API Gateway throttles at 2 rps / burst 5 and requires a Cognito JWT
+  - CKV2_AWS_47 # WAF Log4j rule: no WAF (see above)
+  - CKV_AWS_86  # CloudFront access logging: would need a log bucket
+  - CKV_AWS_310 # Origin failover: single static origin
+  - CKV_AWS_174 # TLS 1.2 minimum: the default *.cloudfront.net certificate doesn't allow setting it
+  - CKV2_AWS_42 # Custom certificate: no custom domain in the demo

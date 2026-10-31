@@ -1,5 +1,8 @@
 terraform {
-  required_version = ">= 1.9, < 2.0"
+  required_version = ">= 1.10, < 2.0"
+  # Partial S3 backend with native locking (use_lockfile). Settings come from
+  # backend.hcl at init time; see backend.hcl.example and infra/bootstrap.
+  backend "s3" {}
   required_providers {
     aws = {
       source  = "hashicorp/aws"

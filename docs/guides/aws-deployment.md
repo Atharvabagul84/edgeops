@@ -12,7 +12,7 @@ Account status verified in the AWS console and account API on 6 October 2026: th
 - Admin-created operator accounts only; no public signup or browser client secret.
 - Separate API and worker Lambda functions and narrowly scoped IAM roles, running Python 3.12 on ARM64.
 - A standard SQS telemetry queue, partial batch failures, five attempts before a dead-letter queue, and 180-second visibility timeout for a 25-second function.
-- A DynamoDB table holding a bounded, single-tenant demonstration state. Conditional version writes retry conflicts against the latest state.
+- A DynamoDB table with one item per device and per accepted reading ([ADR 0004](../decisions/0004-per-device-dynamodb-items.md)). Conditional version writes retry conflicts against the latest device state; writes to different devices don't conflict. (v1.0.0, as deployed on 6 October 2026, stored the whole fleet in one item.)
 - A private, encrypted S3 frontend bucket behind CloudFront Origin Access Control and HTTPS, with a Content Security Policy allowing scripts from the site itself and connections to regional API Gateway/Cognito endpoints.
 - Three-day API/Lambda logs and two operational alarms for dead letters and DynamoDB write throttling. Both alarms currently have no notification actions configured. The optional Terraform email subscription would require recipient confirmation; the separate cost-budget alerts below are already configured.
 
@@ -45,6 +45,8 @@ Verification on 6 October 2026: normal `terraform init -input=false -no-color` c
 API routes: `GET /api/health`, `GET /api/state`, `GET /api/export`, `POST /api/actions`, `POST /api/tick`, `POST /api/reset`, `POST /api/telemetry`. Export returns public state plus `exportedAt`, `diagnosticNote`, and an attachment filename. Actions and telemetry input payloads match the local API; the asynchronous telemetry response is the intentional cloud difference. POST bodies require `application/json`, finite numbers, at most 64 KiB and nesting no deeper than 16 levels. Invalid telemetry receives 400 before any SQS message is sent; the worker validates it again before writing state.
 
 ## Account preparation and deployment sequence
+
+New deploys go through GitHub Actions with OIDC and S3 state: see [GitHub Actions deploy](github-actions-deploy.md). The sequence below is how the v1.0.0 stack was first created by hand.
 
 ### New AWS Projects account: the current account
 

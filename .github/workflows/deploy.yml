@@ -1,0 +1,182 @@
+name: Deploy
+
+# Plan on pull requests with a read-only role; apply only from main in the
+# protected `production` environment. Setup: docs/guides/github-actions-deploy.md.
+# Forks and unconfigured copies skip both jobs (no AWS variables set).
+
+on:
+  pull_request:
+    paths:
+      - backend/**
+      - frontend/**
+      - infra/*.tf
+      - infra/.terraform.lock.hcl
+      - scripts/plan_summary.py
+      - scripts/pipeline_policy.py
+      - .checkov.yaml
+      - .github/workflows/deploy.yml
+  push:
+    branches: [main]
+    paths:
+      - backend/**
+      - frontend/**
+      - infra/*.tf
+      - infra/.terraform.lock.hcl
+      - scripts/plan_summary.py
+      - scripts/pipeline_policy.py
+      - .checkov.yaml
+      - .github/workflows/deploy.yml
+  workflow_dispatch:
+    inputs:
+      allow_delete:
+        description: Apply even if the plan deletes or replaces resources (read the plan summary first)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+env:
+  TF_IN_AUTOMATION: 'true'
+  TF_INPUT: 'false'
+  TF_VAR_region: ${{ vars.AWS_REGION }}
+  TF_VAR_permissions_boundary_arn: ${{ vars.PERMISSIONS_BOUNDARY_ARN }}
+  TF_VAR_alarm_email: ${{ vars.ALARM_EMAIL }}
+  STATE_BUCKET: ${{ vars.TF_STATE_BUCKET }}
+  AWS_REGION: ${{ vars.AWS_REGION }}
+  AWS_ACCOUNT: ${{ vars.AWS_ACCOUNT_ID }}
+  CHECKOV_VERSION: 3.3.26
+
+jobs:
+  plan:
+    name: Plan, Checkov and PR-token check
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      vars.AWS_PLAN_ROLE_ARN != ''
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      id-token: write
+    defaults:
+      run:
+        working-directory: infra
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
+        with:
+          terraform_version: 1.17.0
+          terraform_wrapper: false
+
+      # Live proof that the apply role's trust policy rejects pull_request tokens.
+      - name: Try to assume the apply role with this PR's token (must fail)
+        id: apply_probe
+        continue-on-error: true
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
+        with:
+          role-to-assume: ${{ vars.AWS_APPLY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+          retry-max-attempts: 1
+      - name: Stop if a PR token assumed the apply role
+        if: steps.apply_probe.outcome == 'success'
+        run: |
+          echo "::error::A pull_request OIDC token assumed the apply role. Fix its trust policy before merging."
+          exit 1
+      - name: Record the rejected assume
+        run: echo "PR token could not assume the apply role (expected)." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Assume the read-only plan role
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
+        with:
+          role-to-assume: ${{ vars.AWS_PLAN_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+          allowed-account-ids: ${{ vars.AWS_ACCOUNT_ID }}
+          unset-current-credentials: true
+      - name: Init with the S3 backend
+        run: >-
+          terraform init -lockfile=readonly
+          -backend-config="bucket=$STATE_BUCKET" -backend-config="key=edgeops-demo/terraform.tfstate"
+          -backend-config="region=$AWS_REGION" -backend-config="encrypt=true" -backend-config="use_lockfile=true"
+      - name: Plan
+        run: |
+          terraform plan -lock-timeout=120s -out=tfplan
+          terraform show -json tfplan > plan.json
+      # The plan JSON holds resource attributes, so it is summarized, never uploaded.
+      - name: Summarize
+        run: |
+          { echo "## Terraform plan"; python ../scripts/plan_summary.py plan.json --account "$AWS_ACCOUNT" --region "$AWS_REGION" --allow-delete; } >> "$GITHUB_STEP_SUMMARY"
+      - name: Checkov on the plan JSON
+        run: |
+          python -m pip install --quiet "checkov==$CHECKOV_VERSION"
+          checkov -f plan.json --framework terraform_plan --config-file ../.checkov.yaml
+
+  apply:
+    name: Apply in production
+    if: >-
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
+      github.ref == 'refs/heads/main' && vars.AWS_APPLY_ROLE_ARN != ''
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    environment: production
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      id-token: write
+    defaults:
+      run:
+        working-directory: infra
+    env:
+      ALLOW_DELETE: ${{ inputs.allow_delete && '--allow-delete' || '' }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
+        with:
+          terraform_version: 1.17.0
+          terraform_wrapper: false
+      - name: Tests before touching AWS
+        working-directory: .
+        run: |
+          python -X utf8 -m unittest discover -s tests
+          python -X utf8 -m unittest discover -s infra/tests
+      - name: Assume the apply role (production environment only)
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
+        with:
+          role-to-assume: ${{ vars.AWS_APPLY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+          allowed-account-ids: ${{ vars.AWS_ACCOUNT_ID }}
+      - name: Init with the S3 backend
+        run: >-
+          terraform init -lockfile=readonly
+          -backend-config="bucket=$STATE_BUCKET" -backend-config="key=edgeops-demo/terraform.tfstate"
+          -backend-config="region=$AWS_REGION" -backend-config="encrypt=true" -backend-config="use_lockfile=true"
+      - name: Plan
+        run: |
+          terraform plan -lock-timeout=120s -out=tfplan
+          terraform show -json tfplan > plan.json
+      - name: Summarize and refuse deletes unless allowed
+        run: |
+          set -o pipefail
+          { echo "## Terraform plan"; python ../scripts/plan_summary.py plan.json --account "$AWS_ACCOUNT" --region "$AWS_REGION" $ALLOW_DELETE; } | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Checkov on the plan JSON
+        run: |
+          python -m pip install --quiet "checkov==$CHECKOV_VERSION"
+          checkov -f plan.json --framework terraform_plan --config-file ../.checkov.yaml
+      - name: Apply the saved plan
+        run: terraform apply -lock-timeout=120s tfplan
+      - name: Website responds
+        run: |
+          url="$(terraform output -raw website_url)"
+          curl -fsS -o /dev/null -w "%{http_code} $url\n" "$url" | tee -a "$GITHUB_STEP_SUMMARY"
