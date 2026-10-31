@@ -1,7 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#101b2c"><title>EdgeOps — Fleet reliability</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233c70ee'/%3E%3Cpath d='m8 10 8-4 8 4-8 4Zm0 6 8 4 8-4M8 22l8 4 8-4' fill='none' stroke='white' stroke-width='2.4'/%3E%3C/svg%3E"><link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/responsive.css"><link rel="stylesheet" href="/cloud.css"></head>
-<body>
+<body data-view="boot">
+<div class="boot-screen" role="status"><span class="spinner"></span>Loading EdgeOps…</div>
+<div id="auth-panel" class="signin" hidden></div>
 <a class="skip-link" href="#main-content">Skip to content</a>
 <aside class="sidebar">
   <a class="brand" href="#overview" aria-label="EdgeOps overview"><span class="brand-mark"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="m6 10 10-5 10 5-10 5ZM6 16l10 5 10-5M6 22l10 5 10-5" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"/></svg></span><span>edge<span class="brand-light">ops</span><small>FLEET RELIABILITY</small></span></a>
@@ -18,7 +20,6 @@
     <div class="page-heading"><div><div class="eyebrow">YOUR FLEET, AT A GLANCE</div><h1 id="page-title">Fleet overview</h1><p id="page-description">Every device. Every signal. One clear picture.</p></div><div class="heading-actions"><a id="export-btn" class="button secondary" href="/api/export" download="edgeops-diagnostics.json">Export diagnostics</a><button id="simulation-btn" class="button primary">Start simulation</button></div></div>
     <section class="demo-banner" aria-label="Recovery demonstration"><div class="demo-icon" id="demo-icon"></div><div class="demo-copy"><strong>Resilience you can see.</strong><p id="demo-description">Disconnect a device. Buffer readings. Reconnect without losing a signal.</p></div><button id="demo-btn" class="button banner-button">Run recovery demo <span aria-hidden="true">→</span></button></section>
     <div id="connection-banner" class="connection-banner" role="alert" hidden></div>
-    <section id="auth-panel" class="auth-panel" aria-label="Operator sign-in" hidden></section>
     <div id="content" aria-busy="true"><div class="loading"><span class="spinner"></span>Connecting to telemetry…</div></div>
     <footer class="main-footer"><span><i class="footer-dot"></i><span id="sync-status">Connecting to local backend</span></span><button id="reset-btn" class="text-button">Reset demo data</button></footer>
   </main>

@@ -2,7 +2,7 @@
 
 ## Deployed AWS application
 
-Open [EdgeOps on CloudFront](https://d3aum9pitkz6he.cloudfront.net) and sign in with an authorized Cognito operator. The Sydney deployment uses a single shared synthetic fleet stored in DynamoDB. Dashboard actions change that shared state; coordinate before a reset or recovery demonstration.
+Open [EdgeOps on CloudFront](https://d3aum9pitkz6he.cloudfront.net) and sign in with an authorized Cognito operator's email address and password. If an operator forgets their password or their temporary password expires (after 1 day), the workspace owner sets a new temporary password; there is no self-service reset. The Sydney deployment uses a single shared synthetic fleet stored in DynamoDB. Dashboard actions change that shared state; coordinate before a reset or recovery demonstration.
 
 External telemetry is accepted into SQS with HTTP 202 and processed asynchronously by the worker Lambda. Confirm resulting device sequences or processing counters before claiming delivery completed. See [AWS deployment](../guides/aws-deployment.md), [pipeline operation](../reference/ci-pipeline.md) and the [verified results](../reference/validation.md). The local commands and SQLite backup exercise below apply to local mode.
 
