@@ -30,3 +30,5 @@ skip-check:
   - CKV_AWS_310 # Origin failover: single static origin
   - CKV_AWS_174 # TLS 1.2 minimum: the default *.cloudfront.net certificate doesn't allow setting it
   - CKV2_AWS_42 # Custom certificate: no custom domain in the demo
+  - CKV_AWS_259 # HSTS preload: HSTS is set (1 year, includeSubDomains); preload needs a registrable domain, not *.cloudfront.net
+  - CKV_AWS_374 # Geo restriction: public portfolio demo meant to be reachable from anywhere
