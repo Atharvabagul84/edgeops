@@ -1,9 +1,9 @@
 {
   "name": "edgeops-mvp",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Local-first device reliability demo with a future AWS deployment scaffold",
+  "description": "Fleet-reliability demo: durable device outbox, idempotent replay and an incidents dashboard, deployed on AWS serverless with Terraform",
   "scripts": {
     "test": "node --test frontend/tests/*.test.mjs"
   },
