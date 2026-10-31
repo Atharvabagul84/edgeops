@@ -34,6 +34,12 @@ variable "project" {
   }
 }
 
+variable "permissions_boundary_arn" {
+  description = "Boundary attached to the Lambda roles; the deploy role can only create roles that carry it."
+  type        = string
+  default     = ""
+}
+
 variable "point_in_time_recovery" {
   description = "DynamoDB PITR for the fleet table. Billed per GB-month; the demo table is a few KB."
   type        = bool
