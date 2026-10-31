@@ -1,6 +1,6 @@
 # EdgeOps
 
-**135 tests · 51 Terraform resources live on AWS · release rollback rehearsed in 177.5 s**
+**141 tests · 51 Terraform resources live on AWS · release rollback rehearsed in 177.5 s**
 
 [![CI](https://github.com/Atharvabagul84/edgeops/actions/workflows/ci.yml/badge.svg)](https://github.com/Atharvabagul84/edgeops/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -25,7 +25,7 @@ EdgeOps is a fleet-reliability demo. Devices buffer readings in a durable offlin
 - **A fleet data model that scales by device:** one DynamoDB item per device and per accepted reading, so writers to different devices never conflict ([ADR 0004](docs/decisions/0004-per-device-dynamodb-items.md)). A [store-layer load test](docs/evidence/load-test-results.md) compares it with the v1.0.0 single-item store.
 - **Least-privilege CD:** GitHub OIDC roles split by the token's `sub`, a permissions boundary on every role the stack creates, `iam:PassRole` scoped by ARN, S3 remote state with native locking, Checkov on the plan ([ADR 0005](docs/decisions/0005-github-oidc-deploys-and-s3-state.md)).
 - **Safe releases:** a Jenkins pipeline that can only update existing Lambda code and frontend objects. Resource creation, deletion and permission changes are rejected at plan review. A recorded release → rollback → restore rehearsal verified deployed artifact hashes, and fleet data stayed unchanged.
-- **Testing discipline:** 135 tests across the backend, frontend, AWS adapter and deploy-role policies, run on every pull request by GitHub Actions, plus Terraform validation, Checkov and a container health check.
+- **Testing discipline:** 141 tests across the backend, frontend, AWS adapter and deploy-role policies, run on every pull request by GitHub Actions, plus Terraform validation, Checkov and a container health check.
 
 ## Architecture
 

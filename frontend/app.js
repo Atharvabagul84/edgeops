@@ -1,6 +1,6 @@
 import { request, loadConfig, configureApi, FRONTEND_RELEASE } from './api.js';
 import { createAuthSession } from './auth.js';
-import { renderAuth, downloadDiagnostics } from './cloud-ui.js';
+import { renderAuth, downloadDiagnostics, shellView } from './cloud-ui.js';
 import { icon } from './icons.js';
 import { escapeHtml, time, releasePresentation } from './presentation.js';
 import { metrics, telemetryPanel, deviceInspector, fleetTable } from './fleet.js';
@@ -20,6 +20,12 @@ let config, auth;
 let releaseView=releasePresentation(FRONTEND_RELEASE);
 const cloud = () => config?.mode==='aws';
 const canAccess = () => config && (!cloud() || auth?.getSession().status==='authenticated');
+const setShell = (shell) => {
+  const from=document.body.dataset.view;
+  document.body.dataset.view=shell;
+  document.title=shell==='signin' ? 'Sign in · EdgeOps' : 'EdgeOps — Fleet reliability';
+  if(from==='signin' && shell==='app') $('#main-content').focus({preventScroll:true});
+};
 
 const updateRelease=(phase,release=null)=>{
   releaseView=releasePresentation(FRONTEND_RELEASE,{phase,release});
@@ -215,6 +221,7 @@ route();
 updateControls();
 const sessionChanged = session => {
   const signedIn=session.status==='authenticated';
+  setShell(shellView(config,session));
   renderAuth($('#auth-panel'),auth,session);
   $('#signout-btn').hidden=!signedIn;
   for(const selector of ['#content','.heading-actions','.demo-banner','.main-footer']) $(selector).hidden=!signedIn;
@@ -236,7 +243,7 @@ const start = async () => {
       $('#reset-description').textContent='This clears the shared cloud demo fleet. Stop device agents first: already queued events can repopulate the fleet after reset.';
       views.architecture.description='Authenticated telemetry, buffered delivery, and repeatable AWS infrastructure.';
       sessionChanged(auth.getSession());
-    } else { configureApi(config); await refresh(); }
+    } else { setShell('app'); configureApi(config); await refresh(); }
     setInterval(() => {
       if(document.hidden || !canAccess()) return;
       if(running && !cloud() && !busy && !demoRunning) mutate('/api/tick',{steps:1});
@@ -244,6 +251,7 @@ const start = async () => {
     },cloud() ? 30000 : 4000);
   } catch(error) {
     config=null;
+    setShell('app');
     updateRelease('unavailable');
     $('#content').innerHTML=`<div class="panel empty"><strong>Configuration unavailable</strong><p>${escapeHtml(error.message)}</p><p>Correct the deployment configuration, then reload this page.</p></div>`;
     $('#sync-status').textContent='Configuration could not be loaded';

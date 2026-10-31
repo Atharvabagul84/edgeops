@@ -113,7 +113,19 @@ The [consolidated release rehearsal report](../evidence/release-rehearsal.json) 
 
 This exercise restored source snapshots and redeployed them through Jenkins/Terraform; it did not switch Lambda aliases or roll back the database. Its fixed fleet baseline has been archived so normal future telemetry changes do not invalidate subsequent builds. Packaged screenshots show the [restored release](../evidence/edgeops-release-restored.jpg) and [successful Jenkins run](../evidence/edgeops-jenkins-release-success.jpg).
 
+### Full-screen sign-in view (local mock, 31 October 2026)
+
+A static loopback server served the frontend with a fake, syntactically valid `cloud-config.json`; Cognito and API calls were intercepted in the page and API requests were answered by a separate local SQLite backend. No AWS request was made and the deployed app was not changed.
+
+- Signed out, the page showed only the sign-in view: no sidebar, topbar, release badge or owner identity. Focus started in the Email field and the title read "Sign in · EdgeOps".
+- A wrong password showed the mapped Cognito error, kept the email and moved focus to the cleared password field. Show/hide and the Caps Lock hint worked.
+- The temporary-password challenge rendered "Choose your password"; completing it opened the dashboard with focus on the main content.
+- Sign-out returned to the sign-in view. A forced 401 returned to it with the expired-session notice.
+- Layout checked at 1440×900 and 375px wide with no horizontal scroll. Local mode (no cloud configuration) still opened straight into the dashboard.
+
 ## Explicitly not yet verified
+
+- The full-screen sign-in view has not been released to or checked on the live CloudFront deployment.
 
 - The first-login password challenge and actual expired-token behavior have not been observed against live AWS. The user completed account/password setup outside the observed test; their authenticated browser operation and saved export are verified above.
 - Forced malformed-message delivery to the real DLQ and an alarm transition, concurrent cloud mutation stress, and a full credentials-in-logs audit have not been performed.
