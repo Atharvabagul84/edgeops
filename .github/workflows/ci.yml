@@ -58,6 +58,28 @@ jobs:
         run: terraform init -backend=false -input=false -lockfile=readonly
       - name: Validate
         run: terraform validate
+      - name: Validate the bootstrap root (deploy roles and state bucket)
+        working-directory: infra/bootstrap
+        run: |
+          terraform init -backend=false -input=false
+          terraform validate
+
+  checkov:
+    name: Checkov static scan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - name: Install Checkov
+        run: python -m pip install --quiet checkov==3.3.26
+      # The deploy workflow repeats this on the real plan JSON, where values are known.
+      - name: Scan Terraform source
+        run: checkov -d infra --framework terraform --config-file .checkov.yaml
 
   container:
     name: Docker build and loopback health check

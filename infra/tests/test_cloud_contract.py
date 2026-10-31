@@ -3,7 +3,7 @@ import base64
 import json
 import unittest
 
-from test_aws_handler import FakeDynamo
+from test_aws_handler import MemoryDynamo
 from backend import aws_handler
 
 
@@ -18,9 +18,8 @@ class Queue:
 
 class CloudContractTests(unittest.TestCase):
     def setUp(self):
-        self.db, self.queue = FakeDynamo(), Queue()
-        self.store = aws_handler.StateStore(self.db, "test", initializer=lambda: {
-            **aws_handler.initial_state(), "mode": "aws"})
+        self.db, self.queue = MemoryDynamo(), Queue()
+        self.store = aws_handler.FleetStore(self.db, "test")
 
     def request(self, method, path, payload=None, **overrides):
         event = {"rawPath": path, "body": json.dumps(payload or {}),
@@ -83,17 +82,17 @@ class CloudContractTests(unittest.TestCase):
         self.assertEqual(receipt['accepted'], 1)
         self.assertNotIn('release', self.queue.messages[0])
         self.assertNotIn('release', self.queue.messages[0]['events'][0])
-        self.assertIsNone(self.db.item)
+        self.assertEqual(self.db.items, {})
 
     def test_invalid_telemetry_is_rejected_before_queueing_or_mutation(self):
         result = self.request("POST", "/api/telemetry", {"events": [{"eventId": "missing-fields"}]})
         self.assertEqual(result["statusCode"], 400)
         self.assertEqual(self.queue.messages, [])
-        self.assertIsNone(self.db.item)
+        self.assertEqual(self.db.items, {})
 
     def test_malformed_telemetry_body_is_rejected_before_any_database_read(self):
         class UnavailableStore:
-            def read(self):
+            def devices(self):
                 raise RuntimeError("database unavailable")
         self.store = UnavailableStore()
         result = self.request("POST", "/api/telemetry", body="not-json")
@@ -118,7 +117,7 @@ class CloudContractTests(unittest.TestCase):
     def test_nonfinite_json_is_rejected_even_in_ignored_field(self):
         result = self.request("POST", "/api/actions", body='{"action":"tick","ignored":NaN}')
         self.assertEqual(result["statusCode"], 400)
-        self.assertIsNone(self.db.item)
+        self.assertEqual(self.db.items, {})
 
     def test_deeply_nested_json_is_rejected(self):
         body = '{"action":"tick","nested":' + '[' * 20 + '0' + ']' * 20 + '}'

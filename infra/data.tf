@@ -1,14 +1,32 @@
-resource "aws_dynamodb_table" "state" {
-  name           = "${local.name}-state"
-  billing_mode   = "PROVISIONED"
-  read_capacity  = 5
-  write_capacity = 25
-  hash_key       = "pk"
+# One item per device and per accepted reading (docs/decisions/0004-per-device-dynamodb-items.md).
+resource "aws_dynamodb_table" "fleet" {
+  name         = "${local.name}-fleet"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "pk"
+  range_key    = "sk"
   attribute {
     name = "pk"
     type = "S"
   }
+  attribute {
+    name = "sk"
+    type = "S"
+  }
+  ttl {
+    attribute_name = "expiresAt"
+    enabled        = true
+  }
+  point_in_time_recovery { enabled = var.point_in_time_recovery }
   server_side_encryption { enabled = true }
+}
+
+# The v1.0.0 single-item table leaves Terraform state without being deleted, so
+# the previous release can be restored. Delete it by hand after the cut-over.
+removed {
+  from = aws_dynamodb_table.state
+  lifecycle {
+    destroy = false
+  }
 }
 
 resource "aws_sqs_queue" "dead_letter" {

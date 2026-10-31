@@ -4,12 +4,15 @@ from .fleet import add_event
 from .telemetry import ingest_events
 from .validation import utc_time
 
+DEVICES = (('edge-001', 'Nashik Gateway', 'Nashik, India', 27.2, 92, 96),
+           ('edge-002', 'Pune Cold Store', 'Pune, India', 4.3, 86, 88),
+           ('edge-003', 'Bengaluru Rover', 'Bengaluru, India', 31.1, 78, 91))
 
-def initial_state(now=None):
+
+def initial_state(now=None, definitions=None):
+    """Seed the demo fleet. Persistence adapters may seed a subset of definitions."""
     at = utc_time(now)
-    definitions = [('edge-001', 'Nashik Gateway', 'Nashik, India', 27.2, 92, 96),
-                   ('edge-002', 'Pune Cold Store', 'Pune, India', 4.3, 86, 88),
-                   ('edge-003', 'Bengaluru Rover', 'Bengaluru, India', 31.1, 78, 91)]
+    definitions = DEVICES if definitions is None else definitions
     state = dict(mode='local', now=at, demo=True, dataSource='Synthetic device telemetry',
                  devices=[], incidents=[], events=[],
                  stats=dict(ingested=0, duplicates=0, replayed=0, buffered=0, activeIncidents=0),
@@ -24,7 +27,7 @@ def initial_state(now=None):
         state['_hot'][device_id] = False
         state['_base'][device_id] = temperature
     instant = datetime.fromisoformat(at.replace('Z', '+00:00'))
-    for sequence in range(1, 13):
+    for sequence in range(1, 13 if state['devices'] else 1):
         sample_at = utc_time(instant - timedelta(seconds=(12 - sequence) * 30))
         events = [dict(eventId=f"seed-{item['id']}-{sequence}", deviceId=item['id'], sequence=sequence,
                        at=sample_at, temperature=round(item['temperature'] + (sequence % 3 - 1) * .2, 1),

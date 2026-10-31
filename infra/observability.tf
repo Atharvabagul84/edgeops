@@ -27,7 +27,7 @@ resource "aws_cloudwatch_metric_alarm" "dead_letters" {
 
 resource "aws_cloudwatch_metric_alarm" "write_throttles" {
   alarm_name          = "${local.name}-state-write-throttles"
-  alarm_description   = "Single-item demo throughput exceeded; slow the simulator, then retry."
+  alarm_description   = "Fleet table writes were throttled (hot device partition or account limit); slow the simulator, then retry."
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 1
   metric_name         = "WriteThrottleEvents"
@@ -36,6 +36,6 @@ resource "aws_cloudwatch_metric_alarm" "write_throttles" {
   statistic           = "Sum"
   threshold           = 0
   treat_missing_data  = "notBreaching"
-  dimensions          = { TableName = aws_dynamodb_table.state.name }
+  dimensions          = { TableName = aws_dynamodb_table.fleet.name }
   alarm_actions       = aws_sns_topic.alerts[*].arn
 }
