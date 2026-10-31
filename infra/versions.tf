@@ -34,6 +34,12 @@ variable "project" {
   }
 }
 
+variable "point_in_time_recovery" {
+  description = "DynamoDB PITR for the fleet table. Billed per GB-month; the demo table is a few KB."
+  type        = bool
+  default     = true
+}
+
 variable "alarm_email" {
   description = "Optional verified recipient. SNS sends a subscription confirmation after deployment."
   type        = string

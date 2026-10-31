@@ -32,7 +32,7 @@ resource "aws_iam_role_policy" "lambda" {
     Version = "2012-10-17"
     Statement = [
       { Effect = "Allow", Action = ["logs:CreateLogStream", "logs:PutLogEvents"], Resource = "${aws_cloudwatch_log_group.lambda[each.key].arn}:*" },
-      { Effect = "Allow", Action = ["dynamodb:GetItem", "dynamodb:PutItem"], Resource = aws_dynamodb_table.state.arn },
+      { Effect = "Allow", Action = ["dynamodb:GetItem", "dynamodb:BatchGetItem", "dynamodb:PutItem"], Resource = aws_dynamodb_table.fleet.arn },
       { Effect = "Allow", Action = each.key == "api" ? ["sqs:SendMessage"] : ["sqs:ReceiveMessage", "sqs:DeleteMessage", "sqs:GetQueueAttributes"], Resource = aws_sqs_queue.telemetry.arn }
     ]
   })
@@ -51,7 +51,7 @@ resource "aws_lambda_function" "service" {
   timeout          = 25
   environment {
     variables = {
-      STATE_TABLE = aws_dynamodb_table.state.name
+      FLEET_TABLE = aws_dynamodb_table.fleet.name
       QUEUE_URL   = aws_sqs_queue.telemetry.url
     }
   }
