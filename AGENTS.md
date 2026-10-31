@@ -1,7 +1,7 @@
 # Agent Instructions
 
 ## 01 Purpose
-EdgeOps is a fleet-reliability demo: a durable device outbox, idempotent replay and duplicate suppression, and an incidents dashboard. It runs locally (Python stdlib + SQLite) and is **deployed live on AWS** (ap-southeast-2) with Terraform and a guarded Jenkins pipeline. Treat the AWS stack as production: real account, real credit, shared demo data.
+EdgeOps is a fleet-reliability demo: a durable device outbox, idempotent replay and duplicate suppression, and an incidents dashboard. It runs locally (Python stdlib + SQLite) and is **deployed live on AWS** (ap-southeast-2) with Terraform, released by GitHub Actions with OIDC (legacy: a guarded Jenkins pipeline). Treat the AWS stack as production: real account, real credit, shared demo data.
 
 ## 02 Before You Start
 - Read docs/HANDOFF.md first (local only, never commit it)
@@ -11,7 +11,7 @@ EdgeOps is a fleet-reliability demo: a durable device outbox, idempotent replay 
 ## 03 Live infrastructure rules (never break these)
 - **Never** run `terraform apply`, `terraform destroy`, `terraform import`, `terraform state` changes, or any AWS CLI command that creates, updates or deletes resources or data, without the owner's explicit OK in chat for that exact command
 - Read-only AWS commands (`describe`, `get`, `list`, `sts get-caller-identity`) are fine, but say which profile and Region you use
-- Releases go only through the guarded Jenkins pipeline (plan review rejects anything except code-only updates). Don't apply plans by hand
+- Releases go only through `.github/workflows/deploy.yml` (apply from the protected `production` environment) or the legacy guarded Jenkins pipeline. Don't apply plans by hand; `infra/bootstrap` is applied once by the owner
 - Terraform state and the saved teardown plan live outside the repo (`outputs/`). Never move, copy, print or commit them
 - Never print, export or paste AWS credentials, Cognito passwords or tokens. Don't run `aws configure export-credentials` to display values
 - Don't create Cognito users or change project access policies

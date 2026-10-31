@@ -1,0 +1,7 @@
+# Copy to backend.hcl (git-ignored) and fill in the bootstrap outputs:
+#   terraform -chdir=infra init -backend-config=backend.hcl
+bucket       = "edgeops-tfstate-<account-id>-ap-southeast-2"
+key          = "edgeops-demo/terraform.tfstate"
+region       = "ap-southeast-2"
+encrypt      = true
+use_lockfile = true

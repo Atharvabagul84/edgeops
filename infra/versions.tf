@@ -1,5 +1,8 @@
 terraform {
-  required_version = ">= 1.9, < 2.0"
+  required_version = ">= 1.10, < 2.0"
+  # Partial S3 backend with native locking (use_lockfile). Settings come from
+  # backend.hcl at init time; see backend.hcl.example and infra/bootstrap.
+  backend "s3" {}
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -32,6 +35,18 @@ variable "project" {
     condition     = can(regex("^[a-z][a-z0-9-]{2,25}$", var.project))
     error_message = "Use 3-26 lowercase letters, digits, and hyphens, starting with a letter."
   }
+}
+
+variable "permissions_boundary_arn" {
+  description = "Boundary attached to the Lambda roles; the deploy role can only create roles that carry it."
+  type        = string
+  default     = ""
+}
+
+variable "point_in_time_recovery" {
+  description = "DynamoDB PITR for the fleet table. Billed per GB-month; the demo table is a few KB."
+  type        = bool
+  default     = true
 }
 
 variable "alarm_email" {

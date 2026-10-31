@@ -4,16 +4,14 @@ import json
 import logging
 import math
 import os
-import random
-import time
 
-from .domain import apply_command, ingest_events, initial_state, public_state
+from .domain import public_state
+from .dynamo_store import FleetStore
 from .release import with_release
 from .validation import utc_time, validate_events
 
 LOG = logging.getLogger(__name__)
 LOG.setLevel(logging.INFO)
-MAX_PAYLOAD_BYTES = 350_000
 MAX_REQUEST_BYTES = 64 * 1024
 
 
@@ -21,51 +19,6 @@ class RequestError(ValueError):
     def __init__(self, status, message):
         super().__init__(message)
         self.status = status
-
-
-class StateStore:
-    """Bounded single-tenant demo state with optimistic concurrency control."""
-
-    def __init__(self, client, table, initializer=initial_state):
-        self.client, self.table, self.initializer = client, table, initializer
-
-    def _load(self):
-        item = self.client.get_item(
-            TableName=self.table, Key={"pk": {"S": "STATE"}}, ConsistentRead=True
-        ).get("Item")
-        if item is None:
-            return self.initializer(), 0
-        return json.loads(item["payload"]["S"]), int(item["version"]["N"])
-
-    def read(self):
-        return self._load()[0]
-
-    def update(self, operation):
-        for attempt in range(6):
-            state, version = self._load()
-            result = operation(state)
-            payload = json.dumps(result, separators=(",", ":"), allow_nan=False)
-            if len(payload.encode("utf-8")) > MAX_PAYLOAD_BYTES:
-                raise ValueError("Demo state limit reached; export then reset the demo")
-            request = {
-                "TableName": self.table,
-                "Item": {"pk": {"S": "STATE"}, "version": {"N": str(version + 1)},
-                         "payload": {"S": payload}},
-                "ConditionExpression": "attribute_not_exists(pk)",
-            }
-            if version:
-                request.update(ConditionExpression="#v = :v",
-                               ExpressionAttributeNames={"#v": "version"},
-                               ExpressionAttributeValues={":v": {"N": str(version)}})
-            try:
-                self.client.put_item(**request)
-                return result
-            except Exception as exc:
-                code = getattr(exc, "response", {}).get("Error", {}).get("Code")
-                if code != "ConditionalCheckFailedException":
-                    raise
-                time.sleep(random.uniform(0.005, 0.025) * (attempt + 1))
-        raise RuntimeError("State busy; retry the request")
 
 
 def response(status, payload, headers=None):
@@ -139,11 +92,10 @@ def handle_http(event, store, queue, queue_url=None):
                 command = {"action": "tick", "steps": command.get("steps", 1)}
             elif path == "/api/reset":
                 command = {"action": "reset"}
-            return response(200, public_state(store.update(
-                lambda state: {**apply_command(state, command), "mode": "aws"})))
+            return response(200, public_state(store.command(command)))
         if method == "POST" and path == "/api/telemetry":
             events = event_list(parse_body(event))
-            events = validate_events(store.read(), events)
+            events = validate_events(store.devices(), events)
             sent = queue.send_message(QueueUrl=queue_url or os.environ["QUEUE_URL"],
                                       MessageBody=json.dumps({"events": events}, allow_nan=False))
             return response(202, {"accepted": len(events), "messageId": sent["MessageId"]})
@@ -162,7 +114,7 @@ def handle_queue(event, store):
     for record in event["Records"]:
         try:
             events = event_list(json.loads(record["body"]))
-            store.update(lambda state: ingest_events(state, events))
+            store.ingest(events)
         except Exception as exc:
             failures.append({"itemIdentifier": record["messageId"]})
             LOG.warning(json.dumps({"event": "telemetry_failed", "messageId": record["messageId"],
@@ -172,8 +124,7 @@ def handle_queue(event, store):
 
 def handler(event, context):
     import boto3  # Provided by the AWS Lambda Python runtime.
-    store = StateStore(boto3.client("dynamodb"), os.environ["STATE_TABLE"],
-                       initializer=lambda: {**initial_state(), "mode": "aws"})
+    store = FleetStore(boto3.client("dynamodb"), os.environ["FLEET_TABLE"])
     records = event.get("Records")
     if records and all(record.get("eventSource") == "aws:sqs" for record in records):
         return handle_queue(event, store)

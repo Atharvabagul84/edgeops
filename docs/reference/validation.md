@@ -120,4 +120,14 @@ This exercise restored source snapshots and redeployed them through Jenkins/Terr
 - Terraform teardown has not been executed against this deployment.
 - No production load, uptime, commercial readiness, multi-tenant isolation or physical-device test is claimed.
 
+### Production hardening (2026-10-31): verified locally only
+
+Verified locally: 135 tests pass (68 backend/agent/pipeline, 46 AWS adapter and deploy-role policies, 21 frontend). These include equivalence between the per-device store and the whole-fleet domain, conflict and retry behaviour against an in-memory DynamoDB, and rendered trust policies rejecting `pull_request` tokens for the apply role. An offline load-test run (in-memory table, 5 ms simulated round trip, 50 devices, 8 writers) showed a 64% conflict rate for the single item and 0% for per-device items. These are not AWS numbers.
+
+Not yet verified live:
+- `infra/bootstrap` has not been applied. The OIDC roles, boundary, and state bucket don't exist yet, and state has not been migrated to S3.
+- The deploy workflow has not run against AWS. This covers the PR-token assume probe, the plan role's read coverage (it may surface a missing read action), Checkov on a real plan, and the production-environment apply.
+- The per-device table is not deployed. The live app still runs v1.0.0 on the single-item table.
+- The store-layer load test has not been run against DynamoDB ([results table](../evidence/load-test-results.md) is empty).
+
 At the time of this original deployment validation, no changes had been pushed to GitHub. AWS resources now exist and generate metered usage subject to account allowances and credits; no zero-cost or permanent-free claim is made.

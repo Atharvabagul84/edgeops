@@ -1,5 +1,7 @@
 # EdgeOps
 
+**135 tests · 51 Terraform resources live on AWS · release rollback rehearsed in 177.5 s**
+
 [![CI](https://github.com/Atharvabagul84/edgeops/actions/workflows/ci.yml/badge.svg)](https://github.com/Atharvabagul84/edgeops/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 ![AWS serverless](https://img.shields.io/badge/AWS-Lambda%20%7C%20SQS%20%7C%20DynamoDB%20%7C%20Cognito-FF9900.svg)
@@ -7,8 +9,11 @@
 
 **When an edge device loses its connection, its telemetry shouldn't be lost or counted twice.**
 
-EdgeOps is a fleet-reliability demo. Devices buffer readings in a durable offline outbox, replay them after reconnecting, and the backend suppresses duplicates idempotently. Operators see incidents and recovery evidence on a dashboard. It runs locally with zero dependencies, and is deployed on AWS serverless with Terraform and a guarded Jenkins release/rollback pipeline.
+EdgeOps is a fleet-reliability demo. Devices buffer readings in a durable offline outbox, replay them after reconnecting, and the backend suppresses duplicates idempotently. Operators see incidents and recovery evidence on a dashboard. It runs locally with zero dependencies, and is deployed on AWS serverless with Terraform. Deploys go through GitHub Actions with OIDC (plan on PR, apply from a protected environment); the original guarded Jenkins release/rollback pipeline is kept as the recorded v1.0.0 path.
 
+<!-- Recovery-demo GIF placeholder. To record: run the app locally, click "Run recovery demo",
+     capture ~60 s of the dashboard (e.g. ScreenToGif on Windows, 1280x720, under 5 MB),
+     save as docs/evidence/edgeops-recovery-demo.gif and replace the screenshot below with it. -->
 ![EdgeOps cloud dashboard](docs/evidence/edgeops-cloud-dashboard.jpg)
 
 **Live demo:** [d3aum9pitkz6he.cloudfront.net](https://d3aum9pitkz6he.cloudfront.net). Sign-in uses admin-created Cognito accounts (public signup is disabled), so the screenshots here show what's behind it. The fleet is synthetic; the authentication, queueing, persistence, deployment and CI are real.
@@ -17,8 +22,10 @@ EdgeOps is a fleet-reliability demo. Devices buffer readings in a durable offlin
 
 - **Delivery guarantees:** monotonic per-device sequences, idempotent ingestion, acknowledgement-based replay and duplicate suppression, tested over real HTTP after simulated network loss.
 - **AWS serverless on Terraform:** private S3 + CloudFront, Cognito, API Gateway, two Lambda functions, SQS with a dead-letter queue, DynamoDB and CloudWatch alarms. 51 resources, with locked provider versions.
+- **A fleet data model that scales by device:** one DynamoDB item per device and per accepted reading, so writers to different devices never conflict ([ADR 0004](docs/decisions/0004-per-device-dynamodb-items.md)). A [store-layer load test](docs/evidence/load-test-results.md) compares it with the v1.0.0 single-item store.
+- **Least-privilege CD:** GitHub OIDC roles split by the token's `sub`, a permissions boundary on every role the stack creates, `iam:PassRole` scoped by ARN, S3 remote state with native locking, Checkov on the plan ([ADR 0005](docs/decisions/0005-github-oidc-deploys-and-s3-state.md)).
 - **Safe releases:** a Jenkins pipeline that can only update existing Lambda code and frontend objects. Resource creation, deletion and permission changes are rejected at plan review. A recorded release → rollback → restore rehearsal verified deployed artifact hashes, and fleet data stayed unchanged.
-- **Testing discipline:** 105 tests across the backend, frontend and AWS adapter, run on every pull request by GitHub Actions, plus Terraform validation and a container health check.
+- **Testing discipline:** 135 tests across the backend, frontend, AWS adapter and deploy-role policies, run on every pull request by GitHub Actions, plus Terraform validation, Checkov and a container health check.
 
 ## Architecture
 
@@ -61,6 +68,8 @@ More scenarios (heat incidents, diagnostics export, network-failure recovery, Do
 
 ## Release pipeline
 
+Current path: [GitHub Actions deploy](docs/guides/github-actions-deploy.md). The Jenkins pipeline below made the v1.0.0 releases and is kept as recorded evidence.
+
 | Stage | What it does |
 |---|---|
 | Tests | Backend, frontend and AWS adapter suites, plus pipeline guard tests |
@@ -81,7 +90,7 @@ Jenkins ran on the author's machine, so its UI isn't public. Every pull request 
 ```sh
 python3 -m unittest discover -s tests -v        # backend and edge agent
 node --test frontend/tests/*.test.mjs           # frontend (Node 20+)
-python3 -m unittest discover -s infra/tests -v  # AWS adapter
+python3 -m unittest discover -s infra/tests -v  # AWS adapter and deploy-role policies
 ```
 
 ## Documentation
@@ -95,6 +104,10 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, checks and the pull-request fl
 ## Limitations
 
 A single shared synthetic fleet of three devices; no multi-tenancy, MFA or production uptime claim. Disconnects are simulator-driven, not detected from missing heartbeats. See [deliberate MVP limits](docs/reference/limitations.md) and the [validation record](docs/reference/validation.md) for what was verified live versus locally.
+
+## Development history
+
+This repository starts at the v1.0.0 public release (one squashed commit); the earlier history, through application release 0.3.0 and the Jenkins rehearsal, is in a private archive.
 
 ## License
 
